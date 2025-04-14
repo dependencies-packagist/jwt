@@ -6,8 +6,9 @@ use DateTimeInterface;
 use Token\JWT\Contracts\DataSet;
 use Token\JWT\Contracts\RegisteredClaims;
 use Token\JWT\Contracts\Signature;
+use Token\JWT\Contracts\Token;
 
-final class Plain implements Contracts\Plain
+final class Plain implements Token
 {
     private DataSet   $headers;
     private DataSet   $claims;

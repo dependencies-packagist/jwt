@@ -4,7 +4,6 @@ namespace Token\JWT\Validation\Constraint;
 
 use Token\JWT\Contracts\Constraint;
 use Token\JWT\Contracts\Key;
-use Token\JWT\Contracts\Plain;
 use Token\JWT\Contracts\Signer;
 use Token\JWT\Contracts\Token;
 use Token\JWT\Exceptions\ConstraintViolationException;
@@ -22,10 +21,6 @@ final class SignedWith implements Constraint
 
     public function assert(Token $token): void
     {
-        if (!$token instanceof Plain) {
-            throw new ConstraintViolationException('You should pass a plain token');
-        }
-
         if ($token->headers()->get('alg') !== $this->signer->algorithmId()) {
             throw new ConstraintViolationException('Token signer mismatch');
         }

@@ -11,6 +11,15 @@ interface Token
      */
     public function headers(): DataSet;
 
+    public function claims(): DataSet;
+
+    public function signature(): Signature;
+
+    /**
+     * Returns the token payload
+     */
+    public function payload(): string;
+
     /**
      * Returns if the token is allowed to be used by the audience
      */

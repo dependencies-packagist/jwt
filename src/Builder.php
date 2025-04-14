@@ -9,6 +9,7 @@ use Token\JWT\Contracts\Encoder;
 use Token\JWT\Contracts\Key;
 use Token\JWT\Contracts\RegisteredClaims;
 use Token\JWT\Contracts\Signer;
+use Token\JWT\Contracts\Token;
 use Token\JWT\Exceptions\CannotEncodeContentException;
 use Token\JWT\Exceptions\RegisteredClaimException;
 
@@ -137,7 +138,7 @@ final class Builder implements Contracts\Builder
     /**
      * @inheritdoc
      */
-    public function getToken(Signer $signer, Key $key): Plain
+    public function getToken(Signer $signer, Key $key): Token
     {
         $headers        = $this->headers;
         $headers['alg'] = $signer->algorithmId();

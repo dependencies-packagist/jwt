@@ -101,11 +101,11 @@ interface Builder
      * @param Signer $signer
      * @param Key    $key
      *
-     * @return Plain
+     * @return Token
      * @throws CannotEncodeContentException When data cannot be converted to JSON.
      * @throws CannotSignPayloadException   When payload signing fails.
      * @throws InvalidKeyProvidedException  When issue key is invalid/incompatible.
      * @throws ConversionFailedException    When signature could not be converted.
      */
-    public function getToken(Signer $signer, Key $key): Plain;
+    public function getToken(Signer $signer, Key $key): Token;
 }

@@ -1,0 +1,34 @@
+{
+    "name": "token/jwt",
+    "description": "A simple library to work with JSON Web Token and JSON Web Signature.",
+    "keywords": [
+        "JWT",
+        "JWS"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/dependencies-packagist/jwt",
+    "authors": [
+        {
+            "name": "jundayw",
+            "email": "jundayw@126.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-mbstring": "*",
+        "ext-openssl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Token\\JWT\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

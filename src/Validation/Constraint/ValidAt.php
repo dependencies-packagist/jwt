@@ -3,6 +3,7 @@
 namespace Token\JWT\Validation\Constraint;
 
 use DateInterval;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 use Token\JWT\Contracts\Constraint;
@@ -12,10 +13,10 @@ use Token\JWT\Exceptions\LeewayCannotBeNegative;
 
 final class ValidAt implements Constraint
 {
-    private Clock        $clock;
-    private DateInterval $leeway;
+    private DateTimeImmutable $clock;
+    private DateInterval      $leeway;
 
-    public function __construct(Clock $clock, ?DateInterval $leeway = null)
+    public function __construct(DateTimeImmutable $clock, ?DateInterval $leeway = null)
     {
         $this->clock  = $clock;
         $this->leeway = $this->guardLeeway($leeway);
@@ -48,11 +49,9 @@ final class ValidAt implements Constraint
      */
     public function assert(Token $token): void
     {
-        $now = $this->clock->now();
-
-        $this->assertIssueTime($token, $now->add($this->leeway));
-        $this->assertMinimumTime($token, $now->add($this->leeway));
-        $this->assertExpiration($token, $now->sub($this->leeway));
+        $this->assertIssueTime($token, $this->clock->add($this->leeway));
+        $this->assertMinimumTime($token, $this->clock->add($this->leeway));
+        $this->assertExpiration($token, $this->clock->sub($this->leeway));
     }
 
     /**

@@ -1,0 +1,21 @@
+{
+    "name": "json-web-token",
+    "description": "A simple library to work with JSON Web Token and JSON Web Signature.",
+    "version": "4.0.4",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "docs:build": "vuepress build docs",
+        "docs:clean-dev": "vuepress dev docs --clean-cache",
+        "docs:dev": "vuepress dev docs",
+        "docs:update-package": "pnpm dlx vp-update"
+    },
+    "devDependencies": {
+        "@vuepress/bundler-vite": "2.0.0-rc.20",
+        "@vuepress/theme-default": "2.0.0-rc.88",
+        "gh-pages": "^6.3.0",
+        "sass-embedded": "^1.86.0",
+        "vue": "^3.5.13",
+        "vuepress": "2.0.0-rc.20"
+    }
+}

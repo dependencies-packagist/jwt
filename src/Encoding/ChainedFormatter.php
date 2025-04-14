@@ -4,9 +4,6 @@ namespace Token\JWT\Encoding;
 
 use Token\JWT\Contracts\ClaimsFormatter;
 
-/**
- * @deprecated
- */
 final class ChainedFormatter implements ClaimsFormatter
 {
     /**

@@ -4,11 +4,10 @@ namespace Token\JWT;
 
 use SplFileObject;
 use Throwable;
-use Token\JWT\Contracts\Key as KeyContract;
 use Token\JWT\Exceptions\CannotDecodeContentException;
 use Token\JWT\Exceptions\FileCouldNotBeReadException;
 
-final class Key implements KeyContract
+final class Key implements Contracts\Key
 {
     private string $contents;
     private string $passphrase;

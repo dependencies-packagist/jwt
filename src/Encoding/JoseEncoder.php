@@ -9,9 +9,6 @@ use Token\JWT\Contracts\Encoder;
 use Token\JWT\Exceptions\CannotDecodeContentException;
 use Token\JWT\Exceptions\CannotEncodeContentException;
 
-/**
- * @deprecated
- */
 final class JoseEncoder implements Encoder, Decoder
 {
     private const JSON_DEFAULT_DEPTH = 512;

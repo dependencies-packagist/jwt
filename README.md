@@ -16,6 +16,10 @@ You can install the package via [Composer](https://getcomposer.org/):
 composer require token/jwt
 ```
 
+## Documentation
+
+The documentation is available at <https://dependencies-packagist.github.io/jwt/zh/>.
+
 ## Supported Algorithms
 
 This library supports signing and verifying tokens with both symmetric and asymmetric algorithms.

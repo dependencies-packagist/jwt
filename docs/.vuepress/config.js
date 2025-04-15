@@ -14,13 +14,13 @@ export default defineUserConfig({
                     {text: 'GitHub', link: 'https://github.com/dependencies-packagist/jwt'},
                 ],
                 sidebar: [{
-                    title: 'Introduction',
+                    text: 'Introduction',
                     collapsable: true,
                     children: [
                         '/introduction/installation'
                     ]
                 }, {
-                    title: 'Usage',
+                    text: 'Usage',
                     collapsable: true,
                     children: [
                         '/usage/configuration',
@@ -29,7 +29,7 @@ export default defineUserConfig({
                         '/usage/validating-tokens'
                     ]
                 }, {
-                    title: 'Guides',
+                    text: 'Guides',
                     collapsable: true,
                     children: [
                         '/guides/extending-the-library'
@@ -44,13 +44,13 @@ export default defineUserConfig({
                     {text: 'GitHub', link: 'https://github.com/dependencies-packagist/jwt'},
                 ],
                 sidebar: [{
-                    title: '简介',
+                    text: '简介',
                     collapsable: true,
                     children: [
                         '/zh/introduction/installation'
                     ]
                 }, {
-                    title: '指南',
+                    text: '指南',
                     collapsable: true,
                     children: [
                         '/zh/usage/configuration',
@@ -59,7 +59,7 @@ export default defineUserConfig({
                         '/zh/usage/validating-tokens'
                     ]
                 }, {
-                    title: '参考',
+                    text: '参考',
                     collapsable: true,
                     children: [
                         '/zh/guides/extending-the-library'

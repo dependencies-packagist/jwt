@@ -3,6 +3,7 @@ import {defineUserConfig} from 'vuepress'
 import {viteBundler} from '@vuepress/bundler-vite'
 
 export default defineUserConfig({
+    base: "/jwt/",
     theme: defaultTheme({
         logo: '/images/logo.webp',
         locales: {

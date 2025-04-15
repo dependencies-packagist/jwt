@@ -17,7 +17,8 @@ export default defineUserConfig({
                     text: 'Introduction',
                     collapsable: true,
                     children: [
-                        '/introduction/installation'
+                        '/introduction/installation',
+                        '/introduction/supported-algorithms'
                     ]
                 }, {
                     text: 'Usage',
@@ -47,7 +48,8 @@ export default defineUserConfig({
                     text: '简介',
                     collapsable: true,
                     children: [
-                        '/zh/introduction/installation'
+                        '/zh/introduction/installation',
+                        '/zh/introduction/supported-algorithms'
                     ]
                 }, {
                     text: '指南',

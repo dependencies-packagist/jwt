@@ -24,7 +24,7 @@ use Token\JWT\Contracts\Builder;
 use Token\JWT\Contracts\ClaimsFormatter;
 use Token\JWT\Token;
 
-$token->setBuilderFactory(
+$factory->setBuilderFactory(
     static function (ClaimsFormatter $formatter): Builder {
         return new MyCustomTokenBuilder($formatter);
     }
@@ -62,7 +62,7 @@ final class UnixTimestampDates implements ClaimsFormatter
     }
 }
 
-$token->builder(new UnixTimestampDates());
+$factory->builder(new UnixTimestampDates());
 ```
 
 `Token\JWT\Contracts\ChainedFormatter` 允许用户组合多个声明格式处理器。
@@ -86,7 +86,7 @@ final class MyCustomTokenParser implements Parser
 ```php
 use Token\JWT\Token;
 
-$token->setParser(new MyCustomTokenParser());
+$factory->setParser(new MyCustomTokenParser());
 ```
 
 ## 签名器
@@ -138,7 +138,7 @@ final class MyCustomTokenValidator implements Validator
 ```php
 use Token\JWT\Token;
 
-$token->setValidator(new MyCustomTokenValidator());
+$factory->setValidator(new MyCustomTokenValidator());
 ```
 
 ## 验证约束集合

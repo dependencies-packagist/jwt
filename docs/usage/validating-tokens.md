@@ -17,33 +17,33 @@ use Token\JWT\Token;
 use Token\JWT\Validation\Constraint\IdentifiedBy;
 use Token\JWT\Validation\Constraint\SignedWith;
 
-$token = Token::forSymmetricSigner(
+$factory = Token::forSymmetricSigner(
     new None(),
     Key::empty()
 );
 
-//$jwt = $token->builder()
+//$jwt = $factory->builder()
 //    ->identifiedBy(10000)
-//    ->getToken($token->signer(), $token->signingKey())
+//    ->getToken($factory->signer(), $factory->signingKey())
 //    ->toString();
 
-$plainToken = $token->parser()->parse($jwt);
+$token = $factory->parser()->parse($jwt);
 
-$token->setValidationConstraints(
-    new SignedWith($token->signer(), $token->signingKey()),
+$factory->setValidationConstraints(
+    new SignedWith($factory->signer(), $factory->signingKey()),
     new IdentifiedBy(10001)
 );
 
-$constraints = $token->validationConstraints();
+$constraints = $factory->validationConstraints();
 
 try {
-    $token->validator()->assert($plainToken, ...$constraints);
+    $factory->validator()->assert($token, ...$constraints);
 } catch (RequiredConstraintsViolated $e) {
     // list of constraints violation exceptions:
     var_dump($e->violations());
 }
 
-var_dump($plainToken->toString());
+var_dump($token->toString());
 ```
 
 ## Using `Validator#validate()`
@@ -63,30 +63,30 @@ use Token\JWT\Validation\Constraint\SignedWith;
 $algorithm  = new HS256();
 $signingKey = Key::plainText(random_bytes(32));
 
-$token = Token::forSymmetricSigner(
+$factory = Token::forSymmetricSigner(
     $algorithm,
     $signingKey
 );
 
-$jwt = $token->builder()
+$jwt = $factory->builder()
     ->identifiedBy(10000)
-    ->getToken($token->signer(), $token->signingKey())
+    ->getToken($factory->signer(), $factory->signingKey())
     ->toString();
 
-$plainToken = $token->parser()->parse($jwt);
+$token = $factory->parser()->parse($jwt);
 
-$token->setValidationConstraints(
-    new SignedWith($token->signer(), $token->signingKey()),
+$factory->setValidationConstraints(
+    new SignedWith($factory->signer(), $factory->signingKey()),
     new IdentifiedBy(10000)
 );
 
-$constraints = $token->validationConstraints();
+$constraints = $factory->validationConstraints();
 
-if (!$token->validator()->validate($plainToken, ...$constraints)) {
+if (!$factory->validator()->validate($token, ...$constraints)) {
     throw new RuntimeException('No way!');
 }
 
-var_dump($plainToken->toString());
+var_dump($token->toString());
 ```
 
 ## Available constraints

@@ -25,7 +25,7 @@ use Token\JWT\Contracts\Builder;
 use Token\JWT\Contracts\ClaimsFormatter;
 use Token\JWT\Token;
 
-$token->setBuilderFactory(
+$factory->setBuilderFactory(
     static function (ClaimsFormatter $formatter): Builder {
         return new MyCustomTokenBuilder($formatter);
     }
@@ -63,7 +63,7 @@ final class UnixTimestampDates implements ClaimsFormatter
     }
 }
 
-$token->builder(new UnixTimestampDates());
+$factory->builder(new UnixTimestampDates());
 ```
 
 The class `Token\JWT\Contracts\ChainedFormatter` allows for users to combine multiple formatters.
@@ -88,7 +88,7 @@ Then register an instance in the [Configuration](../usage/configuration.md):
 ```php
 use Token\JWT\Token;
 
-$token->setParser(new MyCustomTokenParser());
+$factory->setParser(new MyCustomTokenParser());
 ```
 
 ## Signer
@@ -143,7 +143,7 @@ Then register an instance in the [Configuration](../usage/configuration.md):
 ```php
 use Token\JWT\Token;
 
-$token->setValidator(new MyCustomTokenValidator());
+$factory->setValidator(new MyCustomTokenValidator());
 ```
 
 ## Validation constraints

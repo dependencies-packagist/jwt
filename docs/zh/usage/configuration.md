@@ -54,7 +54,7 @@ use Token\JWT\Token;
 use Token\JWT\Signature\Hmac\HS256;
 use Token\JWT\Key;
 
-$token = Token::forSymmetricSigner(
+$factory = Token::forSymmetricSigner(
     // You may use any HMAC variations (256, 384, and 512)
     new HS256(),
     // replace the value below with a key of your own!
@@ -73,7 +73,7 @@ use Token\JWT\Token;
 use Token\JWT\Signature\Rsa\RS256;
 use Token\JWT\Key;
 
-$token = Token::forAsymmetricSigner(
+$factory = Token::forAsymmetricSigner(
     // You may use RSA or ECDSA and all their variations (256, 384, and 512)
     new RS256(),
     Key::file(__DIR__ . '/my-private-key.pem'),
@@ -95,7 +95,7 @@ $token = Token::forAsymmetricSigner(
 ```php
 use Token\JWT\Token;
 
-$token = Token::forUnsecuredSigner(
+$factory = Token::forUnsecuredSigner(
     // 如有需要你也可以通过提供额外的参数来重写 JOSE 编码器/解码器
 );
 ```

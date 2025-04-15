@@ -147,6 +147,26 @@ try {
 var_dump($token->toString());
 ```
 
+#### Available constraints
+
+This library provides the following constraints:
+
+* `Token\JWT\Validation\Constraint\IdentifiedBy`: verifies if the claim `jti` matches the expected value
+* `Token\JWT\Validation\Constraint\IssuedBy`: verifies if the claim `iss` is listed as expected values
+* `Token\JWT\Validation\Constraint\PermittedFor`: verifies if the claim `aud` contains the expected value
+* `Token\JWT\Validation\Constraint\RelatedTo`: verifies if the claim `sub` matches the expected value
+* `Token\JWT\Validation\Constraint\SignedWith`: verifies if the token was signed with the expected signer and key
+* `Token\JWT\Validation\Constraint\ValidAt`: verifies the claims `iat`, `nbf`, and `exp` (supports leeway configuration)
+
+## Acknowledgements
+
+This project is heavily inspired by and refactored from [@lcobucci](https://github.com/lcobucci)'s excellent work on [lcobucci/jwt](https://github.com/lcobucci/jwt).
+
+We appreciate the clean architecture and thoughtful design of the original implementation, which made it much easier to build upon and extend with our own features.
+
+> Original Project License: BSD-3-Clause license  
+> Please refer to the original repository for detailed history and contributions.
+
 ## License
 
 Nacosvel Contracts is made available under the MIT License (MIT). Please see [License File](LICENSE) for more information.

@@ -2,222 +2,87 @@
 
 namespace Token\JWT;
 
-use Closure;
-use Token\JWT\Contracts\Builder as BuilderContract;
-use Token\JWT\Contracts\ClaimsFormatter;
-use Token\JWT\Contracts\Constraint;
-use Token\JWT\Contracts\Decoder;
-use Token\JWT\Contracts\Encoder;
-use Token\JWT\Contracts\Key as KeyContract;
-use Token\JWT\Contracts\Parser as ParserContract;
-use Token\JWT\Contracts\Signer;
-use Token\JWT\Contracts\Validator as ValidatorContract;
-use Token\JWT\Encoding\ChainedFormatter;
-use Token\JWT\Encoding\JoseEncoder;
-use Token\JWT\Signature\None;
-use Token\JWT\Validation\Validator;
+use DateTimeInterface;
+use Token\JWT\Contracts\DataSet;
+use Token\JWT\Contracts\RegisteredClaims;
+use Token\JWT\Contracts\Signature;
 
-final class Token
+final class Token implements Contracts\Token
 {
-    private ParserContract    $parser;
-    private Signer            $signer;
-    private KeyContract       $signingKey;
-    private KeyContract       $verificationKey;
-    private ValidatorContract $validator;
+    private DataSet   $headers;
+    private DataSet   $claims;
+    private Signature $signature;
 
-    /**
-     * @var Closure(ClaimsFormatter $claimFormatter): BuilderContract
-     */
-    private Closure $builderFactory;
-
-    /**
-     * @var Constraint[]
-     */
-    private array $validationConstraints = [];
-
-    private function __construct(
-        Signer   $signer,
-        Key      $signingKey,
-        Key      $verificationKey,
-        ?Encoder $encoder = null,
-        ?Decoder $decoder = null
-    )
+    public function __construct(DataSet $headers, DataSet $claims, Signature $signature)
     {
-        $this->signer          = $signer;
-        $this->signingKey      = $signingKey;
-        $this->verificationKey = $verificationKey;
-        $this->parser          = new Parser($decoder ?? new JoseEncoder());
-        $this->validator       = new Validator();
-
-        $this->builderFactory = static function (ClaimsFormatter $claimFormatter) use ($encoder): BuilderContract {
-            return new Builder($encoder ?? new JoseEncoder(), $claimFormatter);
-        };
+        $this->headers   = $headers;
+        $this->claims    = $claims;
+        $this->signature = $signature;
     }
 
-    /**
-     * @param Signer       $signer
-     * @param Key          $signingKey
-     * @param Key          $verificationKey
-     * @param Encoder|null $encoder
-     * @param Decoder|null $decoder
-     *
-     * @return self
-     */
-    public static function forAsymmetricSigner(
-        Signer   $signer,
-        Key      $signingKey,
-        Key      $verificationKey,
-        ?Encoder $encoder = null,
-        ?Decoder $decoder = null
-    ): self
+    public function headers(): DataSet
     {
-        return new self(
-            $signer,
-            $signingKey,
-            $verificationKey,
-            $encoder,
-            $decoder
-        );
+        return $this->headers;
     }
 
-    /**
-     * @param Signer       $signer
-     * @param Key          $key
-     * @param Encoder|null $encoder
-     * @param Decoder|null $decoder
-     *
-     * @return self
-     */
-    public static function forSymmetricSigner(
-        Signer   $signer,
-        Key      $key,
-        ?Encoder $encoder = null,
-        ?Decoder $decoder = null
-    ): self
+    public function claims(): DataSet
     {
-        return new self(
-            $signer,
-            $key,
-            $key,
-            $encoder,
-            $decoder
-        );
+        return $this->claims;
     }
 
-    /**
-     * @param Encoder|null $encoder
-     * @param Decoder|null $decoder
-     *
-     * @return self
-     */
-    public static function forUnsecuredSigner(
-        ?Encoder $encoder = null,
-        ?Decoder $decoder = null
-    ): self
+    public function signature(): Signature
     {
-        $key = Key::empty();
-
-        return new self(
-            new None(),
-            $key,
-            $key,
-            $encoder,
-            $decoder
-        );
+        return $this->signature;
     }
 
-    /**
-     * @param callable(ClaimsFormatter): BuilderContract $builderFactory
-     *
-     * @return void
-     */
-    public function setBuilderFactory(callable $builderFactory): void
+    public function payload(): string
     {
-        $this->builderFactory = Closure::fromCallable($builderFactory);
+        return $this->headers->toString() . '.' . $this->claims->toString();
     }
 
-    /**
-     * @param ClaimsFormatter|null $claimFormatter
-     *
-     * @return BuilderContract
-     */
-    public function builder(?ClaimsFormatter $claimFormatter = null): BuilderContract
+    public function isPermittedFor(string $audience): bool
     {
-        return ($this->builderFactory)($claimFormatter ?? ChainedFormatter::default());
+        return in_array($audience, $this->claims->get(RegisteredClaims::AUDIENCE, []), true);
     }
 
-    /**
-     * @return ParserContract
-     */
-    public function parser(): ParserContract
+    public function isIdentifiedBy(string $id): bool
     {
-        return $this->parser;
+        return $this->claims->get(RegisteredClaims::ID) === $id;
     }
 
-    /**
-     * @param ParserContract $parser
-     *
-     * @return void
-     */
-    public function setParser(ParserContract $parser): void
+    public function isRelatedTo(string $subject): bool
     {
-        $this->parser = $parser;
+        return $this->claims->get(RegisteredClaims::SUBJECT) === $subject;
     }
 
-    /**
-     * @return Signer
-     */
-    public function signer(): Signer
+    public function hasBeenIssuedBy(string ...$issuers): bool
     {
-        return $this->signer;
+        return in_array($this->claims->get(RegisteredClaims::ISSUER), $issuers, true);
     }
 
-    /**
-     * @return KeyContract
-     */
-    public function signingKey(): KeyContract
+    public function hasBeenIssuedBefore(DateTimeInterface $now): bool
     {
-        return $this->signingKey;
+        return $now >= $this->claims->get(RegisteredClaims::ISSUED_AT);
     }
 
-    /**
-     * @return KeyContract
-     */
-    public function verificationKey(): KeyContract
+    public function isMinimumTimeBefore(DateTimeInterface $now): bool
     {
-        return $this->verificationKey;
+        return $now >= $this->claims->get(RegisteredClaims::NOT_BEFORE);
     }
 
-    public function validator(): ValidatorContract
+    public function isExpired(DateTimeInterface $now): bool
     {
-        return $this->validator;
+        if (!$this->claims->has(RegisteredClaims::EXPIRATION_TIME)) {
+            return false;
+        }
+
+        return $now >= $this->claims->get(RegisteredClaims::EXPIRATION_TIME);
     }
 
-    /**
-     * @param ValidatorContract $validator
-     *
-     * @return void
-     */
-    public function setValidator(ValidatorContract $validator): void
+    public function toString(): string
     {
-        $this->validator = $validator;
-    }
-
-    /**
-     * @return Constraint[]
-     */
-    public function validationConstraints(): array
-    {
-        return $this->validationConstraints;
-    }
-
-    /**
-     * @param Constraint[] $validationConstraints
-     *
-     * @return void
-     */
-    public function setValidationConstraints(Constraint ...$validationConstraints): void
-    {
-        $this->validationConstraints = $validationConstraints;
+        return $this->headers->toString() . '.'
+            . $this->claims->toString() . '.'
+            . $this->signature->toString();
     }
 }

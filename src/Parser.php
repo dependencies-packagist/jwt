@@ -5,7 +5,6 @@ namespace Token\JWT;
 use DateTimeImmutable;
 use Token\JWT\Contracts\Decoder;
 use Token\JWT\Contracts\RegisteredClaims;
-use Token\JWT\Contracts\Token;
 use Token\JWT\Exceptions\InvalidTokenStructure;
 use Token\JWT\Exceptions\UnsupportedHeaderFound;
 
@@ -23,13 +22,13 @@ final class Parser implements Contracts\Parser
     /**
      * @inheritdoc
      */
-    public function parse(string $jwt): Token
+    public function parse(string $jwt): Contracts\Token
     {
         [$encodedHeaders, $encodedClaims, $encodedSignature] = $this->splitJwt($jwt);
 
         $header = $this->parseHeader($encodedHeaders);
 
-        return new Plain(
+        return new Token(
             new DataSet($header, $encodedHeaders),
             new DataSet($this->parseClaims($encodedClaims), $encodedClaims),
             $this->parseSignature($header, $encodedSignature)

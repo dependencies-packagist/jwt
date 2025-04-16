@@ -43,8 +43,11 @@ final class RequiredConstraintsViolated extends RuntimeException implements JSON
     /**
      * @return ConstraintViolationException[]
      */
-    public function violations(): array
+    public function violations(?callable $callback = null): array
     {
+        foreach ($this->violations ?? [] as $violation) {
+            $callback && $callback($violation);
+        }
         return $this->violations;
     }
 }

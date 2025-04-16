@@ -23,7 +23,7 @@ Then, register a custom factory in the [Configuration](../usage/configuration.md
 ```php
 use Token\JWT\Contracts\Builder;
 use Token\JWT\Contracts\ClaimsFormatter;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setBuilderFactory(
     static function (ClaimsFormatter $formatter): Builder {
@@ -44,7 +44,7 @@ You may customise and even create your own formatters:
 ```php
 use Token\JWT\Contracts\ClaimsFormatter;
 use Token\JWT\Contracts\RegisteredClaims;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 final class UnixTimestampDates implements ClaimsFormatter
 {
@@ -86,7 +86,7 @@ final class MyCustomTokenParser implements Parser
 Then register an instance in the [Configuration](../usage/configuration.md):
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setParser(new MyCustomTokenParser());
 ```
@@ -141,7 +141,7 @@ final class MyCustomTokenValidator implements Validator
 Then register an instance in the [Configuration](../usage/configuration.md):
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setValidator(new MyCustomTokenValidator());
 ```

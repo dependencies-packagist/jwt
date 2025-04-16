@@ -13,11 +13,11 @@
 use Token\JWT\Exceptions\RequiredConstraintsViolated;
 use Token\JWT\Key;
 use Token\JWT\Signature\None;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Validation\Constraint\IdentifiedBy;
 use Token\JWT\Validation\Constraint\SignedWith;
 
-$factory = Token::forSymmetricSigner(
+$factory = Factory::forSymmetricSigner(
     new None(),
     Key::empty()
 );
@@ -56,14 +56,14 @@ var_dump($token->toString());
 ```php
 use Token\JWT\Key;
 use Token\JWT\Signature\Hmac\HS256;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Validation\Constraint\IdentifiedBy;
 use Token\JWT\Validation\Constraint\SignedWith;
 
 $algorithm  = new HS256();
 $signingKey = Key::plainText(random_bytes(32));
 
-$factory = Token::forSymmetricSigner(
+$factory = Factory::forSymmetricSigner(
     $algorithm,
     $signingKey
 );

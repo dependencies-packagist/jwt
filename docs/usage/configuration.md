@@ -1,6 +1,6 @@
 # Configuration
 
-In order to simplify the setup of the library, we provide the class `Token\JWT\Token`.
+In order to simplify the setup of the library, we provide the class `Token\JWT\Factory`.
 
 It's meant for:
 
@@ -53,11 +53,11 @@ This means that it's really important that your key **remains secret**.
 > You can use the [CryptoKey](https://github.com/AndrewCarterUK/CryptoKey) tool to do this for you.
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Signature\Hmac\HS256;
 use Token\JWT\Key;
 
-$factory = Token::forSymmetricSigner(
+$factory = Factory::forSymmetricSigner(
     // You may use any HMAC variations (256, 384, and 512)
     new HS256(),
     // replace the value below with a key of your own!
@@ -72,11 +72,11 @@ Asymmetric algorithms use a **private key** for signature creation and a **publi
 This means that it's fine to distribute your **public key**. However, the **private key** should **remain secret**.
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Signature\Rsa\RS256;
 use Token\JWT\Key;
 
-$factory = Token::forAsymmetricSigner(
+$factory = Factory::forAsymmetricSigner(
     // You may use RSA or ECDSA and all their variations (256, 384, and 512)
     new RS256(),
     Key::file(__DIR__ . '/my-private-key.pem'),
@@ -96,16 +96,16 @@ $factory = Token::forAsymmetricSigner(
 > It's only provided to allow people to have a simpler and faster setup for tests, avoiding any kind of signature creation/verification.
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
-$factory = Token::forUnsecuredSigner(
+$factory = Factory::forUnsecuredSigner(
     // You may also override the JOSE encoder/decoder if needed by providing extra arguments here
 );
 ```
 
 ### Customisation
 
-By using the setters of the `Token\JWT\Token` you may customise the setup of this library.
+By using the setters of the `Token\JWT\Factory` you may customise the setup of this library.
 
 > Important
 > If you want to use a customised configuration, please make sure you call the setters before of invoking any getter.
@@ -113,10 +113,10 @@ By using the setters of the `Token\JWT\Token` you may customise the setup of thi
 
 These are the available setters:
 
-* `Token\JWT\Token#setBuilderFactory()`: configures how the token builder should be created
-* `Token\JWT\Token#setParser()`: configures a custom token parser
-* `Token\JWT\Token#setValidator()`: configures a custom validator
-* `Token\JWT\Token#setValidationConstraints()`: configures the default set of validation constraints
+* `Token\JWT\Factory#setBuilderFactory()`: configures how the token builder should be created
+* `Token\JWT\Factory#setParser()`: configures a custom token parser
+* `Token\JWT\Factory#setValidator()`: configures a custom validator
+* `Token\JWT\Factory#setValidationConstraints()`: configures the default set of validation constraints
 
 ### Retrieve components
 
@@ -124,10 +124,10 @@ Once you've made all the necessary configuration you can pass the configuration 
 
 These are the available getters:
 
-* `Token\JWT\Token#builder()`: retrieves the token builder (always creating a new instance)
-* `Token\JWT\Token#parser()`: retrieves the token parser
-* `Token\JWT\Token#signer()`: retrieves the signer
-* `Token\JWT\Token#signingKey()`: retrieves the key for signature creation
-* `Token\JWT\Token#verificationKey()`: retrieves the key for signature verification
-* `Token\JWT\Token#validator()`: retrieves the token validator
-* `Token\JWT\Token#validationConstraints()`: retrieves the default set of validation constraints
+* `Token\JWT\Factory#builder()`: retrieves the token builder (always creating a new instance)
+* `Token\JWT\Factory#parser()`: retrieves the token parser
+* `Token\JWT\Factory#signer()`: retrieves the signer
+* `Token\JWT\Factory#signingKey()`: retrieves the key for signature creation
+* `Token\JWT\Factory#verificationKey()`: retrieves the key for signature verification
+* `Token\JWT\Factory#validator()`: retrieves the token validator
+* `Token\JWT\Factory#validationConstraints()`: retrieves the default set of validation constraints

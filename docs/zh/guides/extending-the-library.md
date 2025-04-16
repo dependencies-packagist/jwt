@@ -22,7 +22,7 @@ final class MyCustomTokenBuilder implements Builder
 ```php
 use Token\JWT\Contracts\Builder;
 use Token\JWT\Contracts\ClaimsFormatter;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setBuilderFactory(
     static function (ClaimsFormatter $formatter): Builder {
@@ -43,7 +43,7 @@ $factory->setBuilderFactory(
 ```php
 use Token\JWT\Contracts\ClaimsFormatter;
 use Token\JWT\Contracts\RegisteredClaims;
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 final class UnixTimestampDates implements ClaimsFormatter
 {
@@ -84,7 +84,7 @@ final class MyCustomTokenParser implements Parser
 然后在 [配置](../usage/configuration.md) 中注册一个实例：
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setParser(new MyCustomTokenParser());
 ```
@@ -136,7 +136,7 @@ final class MyCustomTokenValidator implements Validator
 然后在 [配置](../usage/configuration.md) 中注册一个实例：
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
 $factory->setValidator(new MyCustomTokenValidator());
 ```

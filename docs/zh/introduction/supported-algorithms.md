@@ -28,7 +28,6 @@
 | `RS256` | 使用 SHA-256 的 RSASSA-PKCS1-v1_5 签名算法 | `\Token\JWT\Signature\Rsa\RS256`   | `>= 2048 bits` |
 | `RS384` | 使用 SHA-256 的 RSASSA-PKCS1-v1_5 签名算法 | `\Token\JWT\Signature\Rsa\RS384`   | `>= 2048 bits` |
 | `RS512` | 使用 SHA-256 的 RSASSA-PKCS1-v1_5 签名算法 | `\Token\JWT\Signature\Rsa\RS512`   | `>= 2048 bits` |
-| `EdDSA` | EdDSA 签名算法                          | `\Token\JWT\Signature\Eddsa`       | `>= 256 bits`  |
 
 ## 适用于未使用任何签名算法的情况（即 alg: none）
 

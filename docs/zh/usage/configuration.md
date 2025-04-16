@@ -1,6 +1,6 @@
 # 配置
 
-为了简化该库的配置，我们提供了 `Token\JWT\Token` 类。 该类主要用于以下用途：
+为了简化该库的配置，我们提供了 `Token\JWT\Factory` 类。 该类主要用于以下用途：
 
 * 配置默认的签名算法（Signer）和密钥
 * 配置默认的验证约束集合
@@ -50,11 +50,11 @@ $key = Key::file(__DIR__ . '/path-to-my-key-stored-in-a-file.pem'); // this read
 > 你可以使用工具 [CryptoKey](https://github.com/AndrewCarterUK/CryptoKey) 来帮助你生成这样的密钥。
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Signature\Hmac\HS256;
 use Token\JWT\Key;
 
-$factory = Token::forSymmetricSigner(
+$factory = Factory::forSymmetricSigner(
     // You may use any HMAC variations (256, 384, and 512)
     new HS256(),
     // replace the value below with a key of your own!
@@ -69,11 +69,11 @@ $factory = Token::forSymmetricSigner(
 因此，**公钥** 可公开分发，而 **私钥** 必须保持机密，以保障安全性。
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 use Token\JWT\Signature\Rsa\RS256;
 use Token\JWT\Key;
 
-$factory = Token::forAsymmetricSigner(
+$factory = Factory::forAsymmetricSigner(
     // You may use RSA or ECDSA and all their variations (256, 384, and 512)
     new RS256(),
     Key::file(__DIR__ . '/my-private-key.pem'),
@@ -93,16 +93,16 @@ $factory = Token::forAsymmetricSigner(
 > 它仅提供给用户以便在测试时可以更简便、快速地设置，避免任何形式的签名创建/验证。
 
 ```php
-use Token\JWT\Token;
+use Token\JWT\Factory;
 
-$factory = Token::forUnsecuredSigner(
+$factory = Factory::forUnsecuredSigner(
     // 如有需要你也可以通过提供额外的参数来重写 JOSE 编码器/解码器
 );
 ```
 
 ### 自定义配置对象
 
-通过使用 `Token\JWT\Token` 的设置方法，你可以自定义此库的配置。
+通过使用 `Token\JWT\Factory` 的设置方法，你可以自定义此库的配置。
 
 > 重要提示
 > 如果你希望使用自定义配置，请确保在调用任何获取方法之前先调用设置方法。
@@ -110,10 +110,10 @@ $factory = Token::forUnsecuredSigner(
 
 以下是可用的设置方法：
 
-* `Token\JWT\Token#setBuilderFactory()`: 配置如何创建令牌构建器
-* `Token\JWT\Token#setParser()`: 配置自定义的令牌解析器
-* `Token\JWT\Token#setValidator()`: 配置自定义的验证器
-* `Token\JWT\Token#setValidationConstraints()`: 配置默认的验证约束集合
+* `Token\JWT\Factory#setBuilderFactory()`: 配置如何创建令牌构建器
+* `Token\JWT\Factory#setParser()`: 配置自定义的令牌解析器
+* `Token\JWT\Factory#setValidator()`: 配置自定义的验证器
+* `Token\JWT\Factory#setValidationConstraints()`: 配置默认的验证约束集合
 
 ### 获取所需组件
 
@@ -121,10 +121,10 @@ $factory = Token::forUnsecuredSigner(
 
 以下是可用的获取方法：
 
-* `Token\JWT\Token#builder()`: 检索令牌构建器（每次都会创建一个新的实例）
-* `Token\JWT\Token#parser()`: 检索令牌解析器
-* `Token\JWT\Token#signer()`: 检索签名器
-* `Token\JWT\Token#signingKey()`: 检索签名创建的密钥
-* `Token\JWT\Token#verificationKey()`: 检索签名验证的密钥
-* `Token\JWT\Token#validator()`: 检索令牌验证器
-* `Token\JWT\Token#validationConstraints()`: 检索默认的验证约束集合
+* `Token\JWT\Factory#builder()`: 检索令牌构建器（每次都会创建一个新的实例）
+* `Token\JWT\Factory#parser()`: 检索令牌解析器
+* `Token\JWT\Factory#signer()`: 检索签名器
+* `Token\JWT\Factory#signingKey()`: 检索签名创建的密钥
+* `Token\JWT\Factory#verificationKey()`: 检索签名验证的密钥
+* `Token\JWT\Factory#validator()`: 检索令牌验证器
+* `Token\JWT\Factory#validationConstraints()`: 检索默认的验证约束集合

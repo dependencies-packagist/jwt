@@ -30,7 +30,6 @@ They're usually recommended for scenarios where creation is handled by a compone
 | `RS256` | RSASSA-PKCS1-v1_5 using SHA-256 | `\Token\JWT\Signature\Rsa\RS256`   | `>= 2048 bits`  |
 | `RS384` | RSASSA-PKCS1-v1_5 using SHA-384 | `\Token\JWT\Signature\Rsa\RS384`   | `>= 2048 bits`  |
 | `RS512` | RSASSA-PKCS1-v1_5 using SHA-512 | `\Token\JWT\Signature\Rsa\RS512`   | `>= 2048 bits`  |
-| `EdDSA` | EdDSA signature algorithms      | `\Token\JWT\Signature\Eddsa`       | `>= 256 bits`   |
 
 ## `none` algorithm
 
